@@ -1,0 +1,21 @@
+parameters:
+    cim.plupload.form.type.class: CIM\PluploadBundle\Form\PluploadType
+    cim.plupload.form.type.injection.class: CIM\PluploadBundle\Listener\PluploadTypeListener
+
+services:
+    cim.plupload.form.type:
+        class: %cim.plupload.form.type.class%
+        arguments: [@cim.plupload.form.type.injection, @doctrine]
+        tags:
+            -
+                name: form.type
+                alias: plupload
+
+    cim.plupload.form.type.injection:
+        class: %cim.plupload.form.type.injection.class%
+        arguments:	[@templating.engine.twig]
+        tags:
+            -
+                name: kernel.event_listener
+                event: kernel.response
+                method: onKernelResponse

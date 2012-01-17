@@ -1,0 +1,26 @@
+{% block plupload_widget %}
+<div id="{{ id }}" class="upload_container">
+    {% set img = (data is not empty and data.fullPath is not empty) ? data.fullPath | apply_filter('admin_thumb') : '' %}
+    {% set display = (data is not empty and data.fullPath is not empty) ? '' : 'display:none;' %}
+    <img src="{{ img }}" style="{{ display }}" class="preview"/>
+
+    <div class="blankfile file">
+        <strong>Dateiname:</strong> <span class="filename">Testdatei</span><br/>
+        <strong>Dateigröße:</strong> <span class="filesize">10MB</span><br/>
+
+        <div class="progress">
+            <div class="current"></div>
+        </div>
+    </div>
+    <div class="filelist">
+
+    </div>
+    <br/>
+
+    <a id="{{ id }}_pickfiles" class="pickfiles" href="#">
+        <span>Datei auswählen</span>
+    </a>
+    {% set attr = attr|merge({'class': 'upload_id' }) %}
+    {{ block('hidden_widget') }}
+</div>
+{% endblock %}

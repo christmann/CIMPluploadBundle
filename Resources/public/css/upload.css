@@ -1,0 +1,59 @@
+.pickfiles
+{
+	background: -moz-linear-gradient(center top, #FFFFFF, #D3D3D3 46%) repeat scroll 0 0 #CCCCCC;
+	border: 1px solid #999999;
+	border-radius: 5px 5px 5px 5px;
+	color: #000000;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 8pt;
+	padding: 3px 8px;
+	text-align: center;
+	text-decoration: none;
+	margin-bottom: 10px;
+}
+
+.pickfiles span
+{
+
+}
+
+.blankfile
+{
+	display: none;
+}
+
+.filelist .file
+{
+	border: 1px solid #ccc;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 5px;
+	background: #fff6bf;
+}
+
+.filelist .file.finish
+{
+	background: #e6efc2;
+}
+
+.filelist .progress
+{
+	margin-top: 10px;
+	height: 10px;
+	width: 100%;
+	background: #e1e1e1;
+	border: 1px solid #666;
+}
+
+.filelist .progress .current
+{
+	height: 10px;
+	width: 0;
+	background: #666;
+}
+
+.upload_container
+{
+	margin: 0 0 10px 0;
+}
