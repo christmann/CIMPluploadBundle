@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PluploadTypeListener extends InstanceListener
 {
+	public function addInstance($id, $options=array())
+	{
+		$this->instances[$id] = $options;
+	}
+
 	/**
 	 * Injects the Javascript into the given Response.
 	 *
@@ -21,6 +26,6 @@ class PluploadTypeListener extends InstanceListener
 	 */
 	function inject(Response $response)
 	{
-		$this->injectJavascript($response, 'CIMPluploadBundle:Form:plupload_header.html.twig');
+		$this->injectJavascript($response, 'CIMPluploadBundle:Form:header.html.twig');
 	}
 }

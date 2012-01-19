@@ -3,40 +3,17 @@
  * @param object user_options
  *			 options
  */
-function UserUpload(user_options)
+(function($)
 {
-	// default options
-	var options = {
-		runtimes:'gears,html5,flash,silverlight,browserplus',
-		browse_button:'pickfiles',
-		container:'container',
-		max_file_size:'32mb',
-		url:'upload.php',
-		flash_swf_url:'/plupload/js/plupload.flash.swf',
-		silverlight_xap_url:'/plupload/js/plupload.silverlight.xap',
-		multi_selection:false,
-		filters:[
-			{title:"Bilder", extensions:"jpg,png"}
-		],
-		uploadAction: function(json){}
+	$.UserUpload = {};
+	$.UserUpload.Bind = function(up, params)
+	{
+		$('#' + up.settings.browse_button).fadeTo('slow', 1);
 	};
-	// merge user with default options
-	$.extend(options, user_options);
 
-	// create plupload object
-	var uploader = new plupload.Uploader(options);
-	var active = false;
-
-	uploader.bind('Init', function(up, params)
+	$.UserUpload.FilesAdded = function(up, files)
 	{
-		active = true;
-		$('#' + options.browse_button).fadeTo('slow', 1);
-	});
-
-	uploader.init();
-
-	uploader.bind('FilesAdded', function(up, files)
-	{
+		var options = up.settings;
 		$('#' + options.container + ' .filelist .errormsg').remove();
 		$.each(files, function(i, file)
 		{
@@ -48,33 +25,115 @@ function UserUpload(user_options)
 					.show();
 			$('#' + options.container + ' .filelist').append(n);
 		});
-		$('#' + options.container + ' .preview').hide();
+//		$('#' + options.container + ' .preview').hide();
 		up.refresh(); // Reposition Flash/Silverlight
 		up.start();
-	});
+	};
 
-	uploader.bind('UploadProgress', function(up, file)
+	$.UserUpload.UploadProgress = function(up, file)
 	{
 		$('#' + file.id + ' .current').width(file.percent + "%");
-	});
+	};
 
-	uploader.bind('Error', function(up, err)
+	$.UserUpload.Error = function(up, err)
 	{
 		var n = $('<div/>')
 				.addClass('errormsg')
 				.text("[" + err.code + "] " + err.message + " " + (err.file ? "(" + err.file.name + ")" : ""));
-		$('#' + options.container + ' .filelist').append(n);
+		$('#' + up.settings.container + ' .filelist').append(n);
 
 		up.refresh(); // Reposition Flash/Silverlight
-	});
+	};
 
-	uploader.bind('FileUploaded', function(up, file, response)
+	$.UserUpload.FileUploaded = function(up, file, response)
 	{
 		$('#' + file.id).addClass('finish');
 		$('#' + file.id).fadeOut('slow');
 
+		var id = '#' + up.settings.container;
 		var json = $.parseJSON(response.response);
+		if (!up.settings.multi_selection)
+		{
+			$(id + ' input[type=hidden]').remove();
+			$(id + ' .upload_preview:not(.blank)').remove();
+		}
 
-		options.uploadAction(json);
-	});
-}
+		var field = $('<input type="hidden"/>')
+							.attr('name', up.settings.fullName)
+							.addClass('upload_id')
+							.val(json.id);
+					$(id).append(field);
+
+		var img = $(id).find('.upload_preview.blank:first').clone()
+				.removeClass('blank')
+				.attr('rel', json.id)
+				.find('img:first')
+				.attr('src', json.url)
+				.attr('alt', json.name)
+				.end()
+				.show();
+		$(id).find('.upload_images').append(img);
+
+
+
+		up.settings.uploadAction(json);
+	};
+
+	$.UserUpload.FileRemove = function()
+	{
+		var prev = $(this).parents('.upload_preview:first');
+		var parent = $(this).parents('.upload_container:first');
+		var options = $(parent).data('plupload');
+		var id = $(prev).attr('rel');
+
+		$(parent).find('.upload_id').each(function()
+		{
+			if ($(this).val() == id)
+			{
+				$(this).remove();
+			}
+		});
+		$(prev).remove();
+
+		if (!options.multi_selection)
+		{
+			$(parent).append($('<input type="hidden"/>').attr('name', options.fullName).addClass('upload_id'));
+		}
+	};
+
+	$.fn.UserUpload = function(options)
+	{
+		options = $.extend({}, $.fn.UserUpload.defaults, options);
+		options.container = $(this).attr('id');
+
+		$(this).data('plupload', options);
+
+		// create plupload object
+		var uploader = new plupload.Uploader(options);
+
+		uploader.bind('Init', $.UserUpload.Bind);
+		uploader.init();
+		uploader.bind('FilesAdded', $.UserUpload.FilesAdded);
+		uploader.bind('UploadProgress', $.UserUpload.UploadProgress);
+		uploader.bind('Error', $.UserUpload.Error);
+
+		uploader.bind('FileUploaded', $.UserUpload.FileUploaded);
+		$('#' + options.container).find('.upload_remove').live('click', $.UserUpload.FileRemove);
+	};
+
+	$.fn.UserUpload.defaults = {
+		runtimes: 'gears,html5,flash,silverlight,browserplus',
+		browse_button: 'pickfiles',
+		max_file_size: '32mb',
+		url: 'upload.php',
+		flash_swf_url: '/plupload/js/plupload.flash.swf',
+		silverlight_xap_url: '/plupload/js/plupload.silverlight.xap',
+		multi_selection: false,
+		filters: [
+			{title: "Bilder", extensions: "jpg,png"}
+		],
+		uploadAction: function(json) {},
+		fullName: ""
+	};
+
+})(jQuery);

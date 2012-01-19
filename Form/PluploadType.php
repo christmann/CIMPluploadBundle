@@ -1,6 +1,9 @@
 <?php
 namespace CIM\PluploadBundle\Form;
 
+use \Symfony\Component\Form\Extension\Core\DataTransformer\ArrayToChoicesTransformer;
+use \Symfony\Bridge\Doctrine\Form\DataTransformer\EntitiesToArrayTransformer;
+use \Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
 use \CIM\BaseBundle\Form\ListenerType;
 use \Symfony\Bridge\Doctrine\Form\DataTransformer\EntityToIdTransformer;
 use \Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
@@ -18,9 +21,26 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class PluploadType extends ListenerType
 {
+	/**
+	 * {@inheritDoc}
+	 */
 	public function buildForm(FormBuilder $builder, array $options)
 	{
-		$builder->prependClientTransformer(new EntityToIdTransformer($options['choice_list']));
+		if ($options['multiple'])
+		{
+			$builder
+					->addEventSubscriber(new MergeCollectionListener())
+					->prependClientTransformer(new EntitiesToArrayTransformer($options['choice_list']));
+		}
+		else
+		{
+			$builder->prependClientTransformer(new EntityToIdTransformer($options['choice_list']));
+		}
+
+		$builder
+				->setAttribute('choice_list', $options['choice_list'])
+				->setAttribute('multiple', $options['multiple'])
+				->setAttribute('required', $options['required']);
 	}
 
 	/**
@@ -28,25 +48,55 @@ class PluploadType extends ListenerType
 	 */
 	public function buildView(FormView $view, FormInterface $form)
 	{
-		parent::buildView($view, $form);
-
 		$data = $form->getData();
-		$view->set('data', $data);
 
-		parent::buildView($view, $form);
+		$view
+				->set('data', $data)
+				->set('multiple', $form->getAttribute('multiple'));
+
+//		if ($view->get('multiple'))
+//		{
+//			$view->set('full_name', $view->get('full_name') . '[]');
+//		}
+
+		$vars = $view->getVars();
+		$this->getListener()->addInstance($vars['id'], array(
+															'full_name' => $view->get('full_name'),
+															'multiple' => $view->get('multiple')
+													   ));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getDefaultOptions(array $options)
 	{
-		return array(
-			'data_class' => 'CIM\CMSBundle\Entity\File',
-			'choice_list' => new EntityChoiceList(
-				$this->registry->getEntityManager(),
-				'CIM\CMSBundle\Entity\File'
-			)
+		$entity = $this->getContainer()->getParameter('cim.plupload.entity');
+		$default = array(
+			'em' => null,
+			'class' => $entity,
+			'query_builder' => null,
+			'multiple' => false,
 		);
+
+		$options = array_replace($default, $options);
+
+		if (!isset($options['choice_list']))
+		{
+			$default['choice_list'] = new EntityChoiceList(
+				$this->getEntityManager($options['em']),
+				$options['class'],
+				null,
+				$options['query_builder']
+			);
+		}
+
+		return $default;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function getParent(array $options)
 	{
 		return 'choice';

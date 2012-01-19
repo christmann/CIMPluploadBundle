@@ -5,7 +5,7 @@ parameters:
 services:
     cim.plupload.form.type:
         class: %cim.plupload.form.type.class%
-        arguments: [@cim.plupload.form.type.injection, @doctrine]
+        arguments: [@service_container, @cim.plupload.form.type.injection]
         tags:
             -
                 name: form.type

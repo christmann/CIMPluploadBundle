@@ -1,0 +1,24 @@
+{% block plupload_header %}
+<script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js"></script>
+<script type="text/javascript" src="{{ asset('bundles/cimplupload/js/plupload/plupload.full.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/cimplupload/js/plupload/i18n/de.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/cimplupload/js/upload.js') }}"></script>
+<script type="text/javascript">
+    // Custom example logic
+    $(function()
+    {
+        {% for instance,options in instances %}
+        $('#{{ instance }}').UserUpload({
+            url: '{{ path('plupload_upload') }}',
+            flash_swf_url: '{{ asset('bundles/cimplupload/js/plupload/plupload.flash.swf') }}',
+            silverlight_xap_url: '{{ asset('bundles/cimplupload/js/plupload/plupload.silverlight.xap') }}',
+            browse_button: '{{ instance }}_pickfiles',
+            multi_selection: {{ options.multiple ? 'true' : 'false' }},
+            fullName: '{{ options.full_name }}',
+            uploadAction: {% block uploadAction %}{% spaceless%}function(json) { } {% endspaceless %}{% endblock %}
+        });
+        {% endfor %}
+    });
+</script>
+<link href="{{ asset('bundles/cimplupload/css/upload.css') }}" type="text/css" rel="stylesheet"/>
+{% endblock %}

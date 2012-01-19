@@ -1,8 +1,17 @@
 {% block plupload_widget %}
 <div id="{{ id }}" class="upload_container">
-    {% set img = (data is not empty and data.fullPath is not empty) ? data.fullPath | apply_filter('admin_thumb') : '' %}
-    {% set display = (data is not empty and data.fullPath is not empty) ? '' : 'display:none;' %}
-    <img src="{{ img }}" style="{{ display }}" class="preview"/>
+    <div class="upload_images">
+    {% if multiple %}
+        {% for img in data %}
+            {{ block('plupload_widget_image') }}
+        {% endfor %}
+        {{ block('plupload_widget_image') }}
+    {% else %}
+        {% set img = data %}
+        {{ block('plupload_widget_image') }}
+    {% endif %}
+    </div>
+
 
     <div class="blankfile file">
         <strong>Dateiname:</strong> <span class="filename">Testdatei</span><br/>
@@ -20,7 +29,29 @@
     <a id="{{ id }}_pickfiles" class="pickfiles" href="#">
         <span>Datei auswählen</span>
     </a>
+    {% set def_id = id %}
     {% set attr = attr|merge({'class': 'upload_id' }) %}
+    {% if multiple %}
+        {% set values = value %}
+        {% for value in values %}
+            {% set id = def_id ~ value %}
+            {{ block('hidden_widget') }}
+        {% endfor %}
+    {% else %}
+    {% set id = def_id ~ value %}
     {{ block('hidden_widget') }}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block plupload_widget_image %}
+{% set img = img | default(null) %}
+{% set class = class | default(img is null ? 'blank' : '') %}
+{% set path = (img.fullPath is defined) ? img.fullPath | apply_filter('admin_thumb') : '' %}
+{% set display = (img.fullPath is defined) ? '' : 'display:none;' %}
+{% set img_id = (img is not empty) ? img.id : '' %}
+<div class="upload_preview {{ class }}" rel="{{ img_id }}" style="{{ display }}">
+    <img src="{{ path }}" />
+    <div class="upload_remove"></div>
 </div>
 {% endblock %}

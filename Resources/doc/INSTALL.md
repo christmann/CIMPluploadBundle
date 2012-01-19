@@ -9,3 +9,6 @@ Create a new class with CIM\PluploadBundle\Entity\File as parent class.
 
 ## form
 
+    $builder->add('file', 'plupload', array(
+        'multiple' => (true|false)
+    ))

@@ -22,6 +22,11 @@
 	display: none;
 }
 
+.filelist
+{
+	clear: both;
+}
+
 .filelist .file
 {
 	border: 1px solid #ccc;
@@ -56,4 +61,32 @@
 .upload_container
 {
 	margin: 0 0 10px 0;
+}
+
+.upload_images > div
+{
+	float: left;
+}
+
+.upload_preview
+{
+	position: relative;
+}
+
+.upload_remove
+{
+	background: url(../images/trash.png);
+	width: 16px;
+	height: 16px;
+	position: absolute;
+	bottom: 4px;
+	right: 2px;
+	z-index: 10;
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+.upload_remove:hover
+{
+	opacity: 1;
 }
