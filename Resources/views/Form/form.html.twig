@@ -45,13 +45,20 @@
 {% endblock %}
 
 {% block plupload_widget_image %}
-{% set img = img | default(null) %}
-{% set class = class | default(img is null ? 'blank' : '') %}
-{% set path = (img.fullPath is defined) ? img.fullPath | apply_filter('admin_thumb') : '' %}
+{% set img = img|default(null) %}
+{% set class = class|default(img is null ? 'blank' : '') %}
+{% set name = img.name|default('') %}
+{% set path = (img.fullPath is defined) ? img.fullPath|apply_filter('admin_thumb') : '' %}
 {% set display = (img.fullPath is defined) ? '' : 'display:none;' %}
-{% set img_id = (img is not empty) ? img.id : '' %}
-<div class="upload_preview {{ class }}" rel="{{ img_id }}" style="{{ display }}">
-    <img src="{{ path }}" />
+
+<div class="upload_preview {{ class }}" rel="{{ img.id|default('') }}" style="{{ display }}">
+    {% if img is not null %}
+        {% if img.isImage is not defined or img.isImage %}
+            <img src="{{ path }}" alt="{{ name }}" title="{{ name }}" />
+        {% else %}
+            <span>{{ name }}</span>
+        {% endif %}
+    {% endif %}
     <div class="upload_remove"></div>
 </div>
 {% endblock %}

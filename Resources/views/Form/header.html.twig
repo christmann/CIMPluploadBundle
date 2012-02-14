@@ -11,7 +11,7 @@
             var name = $(this).attr('id');
             options = $.extend({}, $.fn.Upload.defaults, {
                 browse_button: name + '_pickfiles',
-                multi_selection: multiple ? 'true' : 'false',
+                multi_selection: multiple,
                 fullName: full_name
             }, options);
 
@@ -30,7 +30,7 @@
     {
         {% for instance,options in instances %}
         $('#{{ instance }}').Upload("{{ options.full_name }}", "{{ options.multiple }}", {
-            filter: {{ options.filter|raw }}
+            filters: {{ options.filter|raw }}
         });
         {% endfor %}
     });

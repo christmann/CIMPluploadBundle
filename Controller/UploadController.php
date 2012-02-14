@@ -36,7 +36,8 @@ class UploadController extends Controller
 			'id' => $file->getId(),
 			'name' => $file->getName(),
 			'path' => $file->getFullPath(),
-			'url' => $cachePath->getBrowserPath($file->getFullPath(), 'admin_thumb')
+			'thumb' => $cachePath->getBrowserPath($file->getFullPath(), 'admin_thumb'),
+			'is_image' => $file->isImage()
 		);
 
 		return $this->jsonResponse($result);

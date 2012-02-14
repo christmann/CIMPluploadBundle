@@ -73,6 +73,11 @@
 	position: relative;
 }
 
+.upload_preview > span
+{
+	padding: 5px 25px 5px 5px;
+}
+
 .upload_remove
 {
 	background: url(../images/trash.png);

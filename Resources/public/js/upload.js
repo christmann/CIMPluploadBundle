@@ -59,22 +59,35 @@
 		}
 
 		var field = $('<input type="hidden"/>')
-							.attr('name', up.settings.fullName)
-							.addClass('upload_id')
-							.val(json.id);
-					$(id).append(field);
+				.attr('name', up.settings.fullName)
+				.addClass('upload_id')
+				.val(json.id);
+		$(id).append(field);
 
 		var img = $(id).find('.upload_preview.blank:first').clone()
 				.removeClass('blank')
-				.attr('rel', json.id)
-				.find('img:first')
-				.attr('src', json.url)
-				.attr('alt', json.name)
-				.end()
-				.show();
+				.attr('rel', json.id);
+
+		$(img).find('span:first').remove();
+		$(img).find('img:first').remove();
+
+		var item = null;
+		if (json.is_image)
+		{
+			item = $('<img/>')
+					.attr('src', json.thumb)
+					.attr('alt', json.name)
+					.attr('title', json.name)
+			;
+		}
+		else
+		{
+			item = $('<span/>').text(json.name);
+
+		}
+		$(img).append(item).show();
+
 		$(id).find('.upload_images').append(img);
-
-
 
 		up.settings.uploadAction(json);
 	};
