@@ -265,6 +265,16 @@ abstract class File
 	}
 
 	/**
+	 * Returns the file extension
+	 *
+	 * @return mixed|string
+	 */
+	public function getExtension()
+	{
+		return pathinfo($this->getPath(), PATHINFO_EXTENSION);
+	}
+
+	/**
 	 * Returns the filename
 	 *
 	 * @return string
