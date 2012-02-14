@@ -38,7 +38,7 @@
             {{ block('hidden_widget') }}
         {% endfor %}
     {% else %}
-    {% set id = def_id ~ value %}
+    {% set id = def_id ~ '_input' %}
     {{ block('hidden_widget') }}
     {% endif %}
 </div>
