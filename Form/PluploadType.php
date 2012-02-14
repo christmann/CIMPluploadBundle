@@ -40,7 +40,8 @@ class PluploadType extends ListenerType
 		$builder
 				->setAttribute('choice_list', $options['choice_list'])
 				->setAttribute('multiple', $options['multiple'])
-				->setAttribute('required', $options['required']);
+				->setAttribute('required', $options['required'])
+				->setAttribute('filter', $options['filter']);
 	}
 
 	/**
@@ -49,20 +50,28 @@ class PluploadType extends ListenerType
 	public function buildView(FormView $view, FormInterface $form)
 	{
 		$data = $form->getData();
+		$filter = $form->getAttribute('filter');
+
+		$filtered = array();
+		foreach ($filter as $key => $item)
+		{
+			$filtered[] = array(
+				'title' => $item,
+				'extensions' => $key
+			);
+		}
 
 		$view
 				->set('data', $data)
-				->set('multiple', $form->getAttribute('multiple'));
-
-//		if ($view->get('multiple'))
-//		{
-//			$view->set('full_name', $view->get('full_name') . '[]');
-//		}
+				->set('multiple', $form->getAttribute('multiple'))
+				->set('filter', json_encode($filtered))
+		;
 
 		$vars = $view->getVars();
 		$this->getListener()->addInstance($vars['id'], array(
 															'full_name' => $view->get('full_name'),
-															'multiple' => $view->get('multiple')
+															'multiple' => $view->get('multiple'),
+															'filter' => $view->get('filter'),
 													   ));
 	}
 
@@ -77,6 +86,9 @@ class PluploadType extends ListenerType
 			'class' => $entity,
 			'query_builder' => null,
 			'multiple' => false,
+			'filter' => array(
+				'jpg,png' => 'Bilder'
+			)
 		);
 
 		$options = array_replace($default, $options);

@@ -6,25 +6,32 @@
 <script type="text/javascript">
     (function($)
     {
-        $.fn.Upload = function(full_name, multiple)
+        $.fn.Upload = function(full_name, multiple, options)
         {
             var name = $(this).attr('id');
-            $(this).UserUpload({
-                url: '{{ path('plupload_upload') }}',
-                flash_swf_url: '{{ asset('bundles/cimplupload/js/plupload/plupload.flash.swf') }}',
-                silverlight_xap_url: '{{ asset('bundles/cimplupload/js/plupload/plupload.silverlight.xap') }}',
+            options = $.extend({}, $.fn.Upload.defaults, {
                 browse_button: name + '_pickfiles',
                 multi_selection: multiple ? 'true' : 'false',
-                fullName: full_name,
-                uploadAction: {% block uploadAction %}{% spaceless%}function(json) { } {% endspaceless %}{% endblock %}
-            });
+                fullName: full_name
+            }, options);
+
+            $(this).UserUpload(options);
+        };
+
+        $.fn.Upload.defaults = {
+            url: '{{ path('plupload_upload') }}',
+            flash_swf_url: '{{ asset('bundles/cimplupload/js/plupload/plupload.flash.swf') }}',
+            silverlight_xap_url: '{{ asset('bundles/cimplupload/js/plupload/plupload.silverlight.xap') }}',
+            uploadAction: {% block uploadAction %}{% spaceless%}function(json) { } {% endspaceless %}{% endblock %}
         };
     })(jQuery);
 
     $(function()
     {
         {% for instance,options in instances %}
-        $('#{{ instance }}').Upload("{{ options.full_name }}", "{{ options.multiple }}");
+        $('#{{ instance }}').Upload("{{ options.full_name }}", "{{ options.multiple }}", {
+            filter: {{ options.filter|raw }}
+        });
         {% endfor %}
     });
 </script>
