@@ -116,7 +116,7 @@ abstract class File
 	public function removeUpload()
 	{
 		$file = $this->getFullPath();
-		if ($file)
+		if ($file && file_exists($file))
 		{
 			unlink($file);
 		}
