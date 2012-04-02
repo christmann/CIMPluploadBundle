@@ -5,11 +5,13 @@
         {% for img in data %}
             {{ block('plupload_widget_image') }}
         {% endfor %}
-        {{ block('plupload_widget_image') }}
     {% else %}
-        {% set img = data %}
-        {{ block('plupload_widget_image') }}
+        {% if data is not null %}
+            {% set img = data %}
+            {{ block('plupload_widget_image') }}
+        {% endif %}
     {% endif %}
+        {{ block('plupload_widget_image') }}
     </div>
 
 
