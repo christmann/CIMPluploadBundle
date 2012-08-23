@@ -1,7 +1,7 @@
 <?php
 namespace CIM\PluploadBundle\Listener;
 
-use CIM\BaseBundle\Listener\InstanceListener;
+use \Localdev\FrameworkExtraBundle\EventListener\InjectionListener;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Bundle\TwigBundle\TwigEngine;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author Fabian Martin <fabian.martin@christmann.info>
  */
-class PluploadTypeListener extends InstanceListener
+class PluploadTypeListener extends InjectionListener
 {
 	public function addInstance($id, $options=array())
 	{

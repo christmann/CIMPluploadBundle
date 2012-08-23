@@ -4,7 +4,7 @@ namespace CIM\PluploadBundle\Form;
 use \Symfony\Component\Form\Extension\Core\DataTransformer\ArrayToChoicesTransformer;
 use \Symfony\Bridge\Doctrine\Form\DataTransformer\EntitiesToArrayTransformer;
 use \Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
-use \CIM\BaseBundle\Form\ListenerType;
+use \Localdev\FrameworkExtraBundle\Form\ListenerType;
 use \Symfony\Bridge\Doctrine\Form\DataTransformer\EntityToIdTransformer;
 use \Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use \Symfony\Component\Form\Extension\Core\DataTransformer\ScalarToChoiceTransformer;
