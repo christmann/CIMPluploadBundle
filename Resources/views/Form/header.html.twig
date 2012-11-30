@@ -29,9 +29,11 @@
     $(function()
     {
         {% for instance,options in instances %}
-        $('#{{ instance }}').Upload("{{ options.full_name }}", "{{ options.multiple }}", {
-            filters: {{ options.filter|raw }}
-        });
+			{% if "$" not in instance %}
+				$('#{{ instance }}').Upload("{{ options.full_name }}", "{{ options.multiple }}", {
+					filters: {{ options.filter|raw }}
+				});
+			{% endif %}
         {% endfor %}
     });
 </script>
