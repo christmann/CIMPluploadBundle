@@ -24,7 +24,7 @@ class PluploadType extends InjectionListenerType
 	/**
 	 * {@inheritDoc}
 	 */
-	public function buildForm(FormBuilder $builder, array $options)
+	public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
 	{
 		if ($options['multiple'])
 		{
@@ -47,7 +47,7 @@ class PluploadType extends InjectionListenerType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function buildView(FormView $view, FormInterface $form)
+	public function buildView(FormView $view, FormInterface $form, array $options)
 	{
 		$data = $form->getData();
 		$filter = $form->getAttribute('filter');
@@ -109,7 +109,7 @@ class PluploadType extends InjectionListenerType
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getParent(array $options)
+	public function getParent()
 	{
 		return 'choice';
 	}
