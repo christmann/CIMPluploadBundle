@@ -5,7 +5,7 @@ use \Symfony\Component\Form\Extension\Core\DataTransformer\ArrayToChoicesTransfo
 use \Symfony\Bridge\Doctrine\Form\DataTransformer\EntitiesToArrayTransformer;
 use \Symfony\Bridge\Doctrine\Form\EventListener\MergeCollectionListener;
 use \Localdev\FrameworkExtraBundle\Form\InjectionListenerType;
-use \Symfony\Bridge\Doctrine\Form\DataTransformer\EntityToIdTransformer;
+use \Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer;
 use \Symfony\Bridge\Doctrine\Form\ChoiceList\EntityChoiceList;
 use \Symfony\Component\Form\Extension\Core\DataTransformer\ScalarToChoiceTransformer;
 use \Symfony\Component\Form\FormView;
@@ -26,17 +26,6 @@ class PluploadType extends InjectionListenerType
 	 */
 	public function buildForm(\Symfony\Component\Form\FormBuilderInterface $builder, array $options)
 	{
-		if ($options['multiple'])
-		{
-			$builder
-					->addEventSubscriber(new MergeCollectionListener())
-					->prependClientTransformer(new EntitiesToArrayTransformer($options['choice_list']));
-		}
-		else
-		{
-			$builder->prependClientTransformer(new EntityToIdTransformer($options['choice_list']));
-		}
-
 		$builder
 				->setAttribute('choice_list', $options['choice_list'])
 				->setAttribute('multiple', $options['multiple'])
