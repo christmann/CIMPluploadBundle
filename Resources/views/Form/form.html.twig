@@ -17,8 +17,8 @@
 
 
     <div class="blankfile file">
-        <strong>Dateiname:</strong> <span class="filename">Testdatei</span><br/>
-        <strong>Dateigröße:</strong> <span class="filesize">10MB</span><br/>
+        <strong>{{ 'filename' | trans({}, 'plupload') }}:</strong> <span class="filename">{{ 'testfile' | trans({}, 'plupload') }}</span><br/>
+        <strong>{{ 'filesize' | trans({}, 'plupload') }}:</strong> <span class="filesize">{{ 'testsize' | trans({}, 'plupload') }}</span><br/>
 
         <div class="progress">
             <div class="current"></div>
@@ -30,7 +30,7 @@
     <br/>
 
     <a id="{{ id }}_pickfiles" class="pickfiles" href="#">
-        <span>Datei auswählen</span>
+        <span>{{ 'select.%what%' | trans({'%what%': 'file' | trans({}, 'plupload')}, 'plupload') }}</span>
     </a>
     {% set def_id = id %}
     {% set attr = attr|merge({'class': 'upload_id' }) %}
@@ -51,7 +51,7 @@
 {% set img = img|default(null) %}
 {% set class = class|default(img is null ? 'blank' : '') %}
 {% set name = img.name|default('') %}
-{% set path = (img.fullPath is defined) ? img.fullPath|apply_filter('admin_thumb') : '' %}
+{% set path = (img.fullPath is defined) ? img.fullPath|apply_filter((pluploadFilter is defined ? pluploadFilter : 'admin_thumb')) : '' %}
 {% set display = (img.fullPath is defined) ? '' : 'display:none;' %}
 
 <div class="upload_preview {{ class }}" rel="{{ img.id|default('') }}" style="{{ display }}">
