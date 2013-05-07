@@ -13,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Plupload
@@ -30,7 +31,8 @@ class PluploadType extends InjectionListenerType
 				->setAttribute('choice_list', $options['choice_list'])
 				->setAttribute('multiple', $options['multiple'])
 				->setAttribute('required', $options['required'])
-				->setAttribute('filter', $options['filter']);
+				->setAttribute('filter', $options['filter'])
+		;
 	}
 
 	/**
@@ -38,8 +40,12 @@ class PluploadType extends InjectionListenerType
 	 */
 	public function buildView(FormView $view, FormInterface $form, array $options)
 	{
+		/* @var $form \Symfony\Component\Form\Form */
 		$data = $form->getData();
-		$filter = $form->getAttribute('filter');
+//		$filter = $form->getAttribute('filter');
+		$filter = array(
+			'jpg,png' => 'Bilder'
+		);
 
 		$filtered = array();
 		foreach ($filter as $key => $item)
@@ -50,25 +56,27 @@ class PluploadType extends InjectionListenerType
 			);
 		}
 
-		$view
-				->set('data', $data)
-				->set('multiple', $form->getAttribute('multiple'))
-				->set('filter', json_encode($filtered))
-		;
+		$view->vars = array_replace($view->vars, array(
+			'data'        => $data,
+			'multiple' => false, //$form->getAttribute('multiple')
+			'filter' => json_encode($filtered),
+		));
 
-		$vars = $view->getVars();
-		$this->getListener()->addInstance($vars['id'], array(
-															'full_name' => $view->get('full_name'),
-															'multiple' => $view->get('multiple'),
-															'filter' => $view->get('filter'),
+		$this->getListener()->addInstance($view->vars['id'], array(
+															'full_name' => $view->vars['full_name'],
+															'multiple' => $view->vars['multiple'],
+															'filter' => $view->vars['filter'],
 													   ));
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritdoc}
 	 */
-	public function getDefaultOptions(array $options)
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
+		/* @var $options array */
+		$options = $resolver->resolve();
+
 		$entity = $this->getContainer()->getParameter('cim.plupload.entity');
 		$default = array(
 			'em' => null,
@@ -82,17 +90,17 @@ class PluploadType extends InjectionListenerType
 
 		$options = array_replace($default, $options);
 
-		if (!isset($options['choice_list']))
+		if (!isset($options['choice_list']) || count($options['choice_list']) < 1)
 		{
 			$default['choice_list'] = new EntityChoiceList(
-				$this->getEntityManager($options['em']),
-				$options['class'],
-				null,
-				$options['query_builder']
+				$this->getManager($options['em']),				// ObjectManager $manager
+				$options['class'],								// $class
+				null,											// $labelPath = null
+				$options['query_builder']						// EntityLoaderInterface $entityLoader = null
 			);
 		}
 
-		return $default;
+		$resolver->setDefaults($default);
 	}
 
 	/**
