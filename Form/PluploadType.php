@@ -13,6 +13,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Plupload
@@ -39,7 +41,7 @@ class PluploadType extends InjectionListenerType
 	public function buildView(FormView $view, FormInterface $form, array $options)
 	{
 		$data = $form->getData();
-		$filter = $form->getAttribute('filter');
+		$filter = $form->getConfig()->getAttribute('filter');
 
 		$filtered = array();
 		foreach ($filter as $key => $item)
@@ -50,24 +52,24 @@ class PluploadType extends InjectionListenerType
 			);
 		}
 
-		$view
-				->set('data', $data)
-				->set('multiple', $form->getAttribute('multiple'))
-				->set('filter', json_encode($filtered))
-		;
+		$view->vars = array_replace($view->vars, array(
+			'data'        => $data,
+			'multiple' => $form->getConfig()->getAttribute('multiple'),
+			'filter' => json_encode($filtered),
+		));
 
-		$vars = $view->getVars();
+		$vars = $view->vars;
 		$this->getListener()->addInstance($vars['id'], array(
-															'full_name' => $view->get('full_name'),
-															'multiple' => $view->get('multiple'),
-															'filter' => $view->get('filter'),
+															'full_name' => $vars['full_name'],
+															'multiple' => $vars['multiple'],
+															'filter' => $vars['filter'],
 													   ));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getDefaultOptions(array $options)
+	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 		$entity = $this->getContainer()->getParameter('cim.plupload.entity');
 		$default = array(
@@ -80,19 +82,17 @@ class PluploadType extends InjectionListenerType
 			)
 		);
 
-		$options = array_replace($default, $options);
-
-		if (!isset($options['choice_list']))
+		if (!isset($default['choice_list']))
 		{
 			$default['choice_list'] = new EntityChoiceList(
-				$this->getEntityManager($options['em']),
-				$options['class'],
+				$this->getManager($default['em']),
+				$default['class'],
 				null,
-				$options['query_builder']
+				$default['query_builder']
 			);
 		}
 
-		return $default;
+		$resolver->setDefaults($default);
 	}
 
 	/**
