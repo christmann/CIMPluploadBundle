@@ -14,6 +14,10 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class PluploadTypeListener extends InjectionListener
 {
+	/**
+	 * @param string $id
+	 * @param array $options
+	 */
 	public function addInstance($id, $options=array())
 	{
 		$this->instances[$id] = $options;

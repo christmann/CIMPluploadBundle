@@ -6,6 +6,10 @@ use CIM\PluploadBundle\DependencyInjection\Compiler\TwigFormPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class CIMPluploadBundle
+ * @package CIM\PluploadBundle
+ */
 class CIMPluploadBundle extends Bundle
 {
 	/**
