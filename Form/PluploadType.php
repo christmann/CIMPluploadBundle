@@ -78,7 +78,7 @@ class PluploadType extends InjectionListenerType
 			'query_builder' => null,
 			'multiple' => false,
 			'filter' => array(
-				'jpg,png' => 'Bilder'
+				'jpg,png,gif,bmp,jpeg' => 'Bilder'
 			)
 		);
 
