@@ -1,0 +1,20 @@
+{
+    "name": "christmann/pluploadbundle",
+    "description": "plupload for symfony",
+    "type": "symfony-bundle",
+    "homepage": "http://christmann.info",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.0.*"
+    },
+    "authors": [
+        {
+            "name": "Christmann",
+            "email": "mail@christmann.info"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "CIM\\PluploadBundle": "" }
+    },
+    "target-dir": "CIM/PluploadBundle"
+}
