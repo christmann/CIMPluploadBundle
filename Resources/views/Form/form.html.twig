@@ -30,7 +30,7 @@
     <br/>
 
     <a id="{{ id }}_pickfiles" class="pickfiles" href="#">
-        <span>{{ 'select.%what%' | trans({'%what%': 'file' | trans({}, 'plupload')}, 'plupload') }}</span>
+        <span>{% if label is not null %}{{ label | trans }}{% else %}{{ 'select.%what%' | trans({'%what%': 'file' | trans({}, 'plupload')}, 'plupload') }}{% endif %}</span>
     </a>
     {% set def_id = id %}
     {% set attr = attr|merge({'class': 'upload_id' }) %}
