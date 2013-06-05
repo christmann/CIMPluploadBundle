@@ -89,6 +89,8 @@
 
 		$(id).find('.upload_images').append(img);
 
+        $(id).find('.upload_placeholder').hide();
+
 		up.settings.uploadAction(json);
 	};
 
@@ -107,6 +109,8 @@
 			}
 		});
 		$(prev).remove();
+
+        parent.find('.upload_placeholder').show();
 
 		if (!options.multi_selection)
 		{
