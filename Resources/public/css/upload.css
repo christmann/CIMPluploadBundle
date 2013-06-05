@@ -91,6 +91,13 @@
 	opacity: 0.5;
 }
 
+.upload_placeholder
+{
+	background: url(../images/placeholder.png);
+	width: 130px;
+	height: 130px;
+}
+
 .upload_remove:hover
 {
 	opacity: 1;
