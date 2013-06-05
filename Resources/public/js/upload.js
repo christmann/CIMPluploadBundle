@@ -131,7 +131,7 @@
 		uploader.bind('Error', $.UserUpload.Error);
 
 		uploader.bind('FileUploaded', $.UserUpload.FileUploaded);
-		$('#' + options.container).find('.upload_remove').on('click', $.UserUpload.FileRemove);
+		$('#' + options.container).on('click', '.upload_remove', $.UserUpload.FileRemove);
 	};
 
 	$.fn.UserUpload.defaults = {
