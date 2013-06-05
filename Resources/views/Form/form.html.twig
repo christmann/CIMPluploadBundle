@@ -10,7 +10,9 @@
             {% set img = data %}
             {{ block('plupload_widget_image') }}
         {% endif %}
-	    <div class="upload_placeholder"{% if data is not null %} style="display: none;"{% endif %}></div>
+	    {% if placeholder %}
+		    <div class="upload_placeholder"{% if data is not null %} style="display: none;"{% endif %}></div>
+		{% endif %}
     {% endif %}
     {% set img = null %}
     {{ block('plupload_widget_image') }}

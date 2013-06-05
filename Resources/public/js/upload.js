@@ -89,7 +89,7 @@
 
 		$(id).find('.upload_images').append(img);
 
-        $(id).find('.upload_placeholder').hide();
+        $(id).find('.upload_placeholder').each(function() { $(this).hide(); });
 
 		up.settings.uploadAction(json);
 	};
@@ -110,7 +110,7 @@
 		});
 		$(prev).remove();
 
-        parent.find('.upload_placeholder').show();
+        parent.find('.upload_placeholder').each(function() { $(this).show(); });
 
 		if (!options.multi_selection)
 		{
