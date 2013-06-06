@@ -139,7 +139,7 @@
 	};
 
 	$.fn.UserUpload.defaults = {
-		runtimes: 'gears,html5,flash,silverlight,browserplus',
+		runtimes: 'gears,html5,flash,html4,silverlight,browserplus',
 		browse_button: 'pickfiles',
 		max_file_size: '32mb',
 		url: 'upload.php',
