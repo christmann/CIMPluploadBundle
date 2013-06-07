@@ -32,6 +32,7 @@ class PluploadType extends InjectionListenerType
 				->setAttribute('choice_list', $options['choice_list'])
 				->setAttribute('multiple', $options['multiple'])
 				->setAttribute('placeholder', $options['placeholder'])
+				->setAttribute('bootstrap', $options['bootstrap'])
 				->setAttribute('required', $options['required'])
 				->setAttribute('filter', $options['filter']);
 	}
@@ -57,6 +58,7 @@ class PluploadType extends InjectionListenerType
 			'data'        => $data,
 			'multiple' => $form->getConfig()->getAttribute('multiple'),
 			'placeholder' => $form->getConfig()->getAttribute('placeholder'),
+			'bootstrap' => $form->getConfig()->getAttribute('bootstrap'),
 			'filter' => json_encode($filtered),
 		));
 
@@ -65,6 +67,7 @@ class PluploadType extends InjectionListenerType
 															'full_name' => $vars['full_name'],
 															'multiple' => $vars['multiple'],
 															'placeholder' => $vars['placeholder'],
+															'bootstrap' => $vars['bootstrap'],
 															'filter' => $vars['filter'],
 													   ));
 	}
@@ -81,6 +84,7 @@ class PluploadType extends InjectionListenerType
 			'query_builder' => null,
 			'multiple' => false,
 			'placeholder' => false,
+			'bootstrap' => false,
 			'filter' => array(
 				'jpg,png,gif,bmp,jpeg' => 'Bilder'
 			)

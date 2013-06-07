@@ -32,7 +32,7 @@
     </div>
     <br/>
 
-    <a id="{{ id }}_pickfiles" class="pickfiles" href="#">
+    <a id="{{ id }}_pickfiles" class="{% if bootstrap %}btn btn-small{% else %}pickfiles{% endif %}" href="#">
         <span>{% if label is not null %}{{ label | trans }}{% else %}{{ 'select.%what%' | trans({'%what%': 'file' | trans({}, 'plupload')}, 'plupload') }}{% endif %}</span>
     </a>
     {% set def_id = id %}
