@@ -20,7 +20,7 @@ class UploadController extends Controller
 	public function uploadAction()
 	{
 		/* @var \Doctrine\ORM\EntityManager $em */
-		$em = $this->getEntityManager();
+		$em = $this->getManager();
 
 		/* @var \Symfony\Component\HttpFoundation\Request $request */
 		$request = $this->getRequest();
@@ -44,7 +44,12 @@ class UploadController extends Controller
 			'is_image' => $file->isImage()
 		);
 
-		return $this->jsonResponse($result);
+		$response = $this->jsonResponse($result);
+		if(get_browser()->browser || preg_match('#MSIE #i', $request->server->get('HTTP_USER_AGENT')))
+		{
+			$response->headers->set('Content-Type', 'text/html');
+		}
+		return $response;
 	}
 }
 
