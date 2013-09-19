@@ -1,6 +1,7 @@
 parameters:
     cim.plupload.form.type.class: CIM\PluploadBundle\Form\PluploadType
     cim.plupload.form.type.injection.class: CIM\PluploadBundle\Listener\PluploadTypeListener
+    cim.plupload.twig.filesize.class: CIM\PluploadBundle\Twig\FileSizeExtension
 
 services:
     cim.plupload.form.type:
@@ -19,3 +20,8 @@ services:
                 name: kernel.event_listener
                 event: kernel.response
                 method: onKernelResponse
+
+    cim.plupload.twig.filesize:
+        class: %cim.plupload.twig.filesize.class%
+        tags:
+            - { name: twig.extension }

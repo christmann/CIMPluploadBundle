@@ -33,7 +33,8 @@
     <br/>
 
     <a id="{{ id }}_pickfiles" class="{% if bootstrap %}btn btn-small{% else %}pickfiles{% endif %}" href="#">
-        <span>{% if label is not null %}{{ label | trans }}{% else %}{{ 'select.%what%' | trans({'%what%': 'file' | trans({}, 'plupload')}, 'plupload') }}{% endif %}</span>
+        <span>{% if label is not null %}{{ label | trans }}{% else %}{{ 'select.%what%' | trans({'%what%': 'file' | trans({}, 'plupload')}, 'plupload') }}{% endif %}
+			{%- if showMaxSize %} ({{ getMaxUploadSize() }}){% endif %}</span>
     </a>
     {% set def_id = id %}
     {% set attr = attr|merge({'class': 'upload_id' }) %}

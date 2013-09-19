@@ -33,6 +33,7 @@ class PluploadType extends InjectionListenerType
 				->setAttribute('multiple', $options['multiple'])
 				->setAttribute('placeholder', $options['placeholder'])
 				->setAttribute('bootstrap', $options['bootstrap'])
+				->setAttribute('showMaxSize', $options['showMaxSize'])
 				->setAttribute('required', $options['required'])
 				->setAttribute('filter', $options['filter']);
 	}
@@ -59,6 +60,7 @@ class PluploadType extends InjectionListenerType
 			'multiple' => $form->getConfig()->getAttribute('multiple'),
 			'placeholder' => $form->getConfig()->getAttribute('placeholder'),
 			'bootstrap' => $form->getConfig()->getAttribute('bootstrap'),
+			'showMaxSize' => $form->getConfig()->getAttribute('showMaxSize'),
 			'filter' => json_encode($filtered),
 		));
 
@@ -68,6 +70,7 @@ class PluploadType extends InjectionListenerType
 															'multiple' => $vars['multiple'],
 															'placeholder' => $vars['placeholder'],
 															'bootstrap' => $vars['bootstrap'],
+															'showMaxSize' => $vars['showMaxSize'],
 															'filter' => $vars['filter'],
 													   ));
 	}
@@ -85,6 +88,7 @@ class PluploadType extends InjectionListenerType
 			'multiple' => false,
 			'placeholder' => false,
 			'bootstrap' => false,
+			'showMaxSize' => false,
 			'filter' => array(
 				'jpg,png,gif,bmp,jpeg' => 'Bilder'
 			)
