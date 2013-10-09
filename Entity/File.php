@@ -111,7 +111,7 @@ abstract class File
 	/**
 	 * Removes the file, if the entity was deleted
 	 *
-	 * @ORM\PostRemove()
+	 * @ORM\PreRemove()
 	 */
 	public function removeUpload()
 	{
