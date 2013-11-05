@@ -24,7 +24,7 @@ class FileSizeExtension extends \Twig_Extension
 	 */
 	public function getMaxUploadSize()
 	{
-		return ini_get('upload_max_filesize');
+		return strtoupper(str_replace('bb', 'b', ini_get('upload_max_filesize') . 'b'));
 	}
 
 	/**
