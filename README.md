@@ -25,7 +25,7 @@ Now download the bundle per command.
 $ php composer.phar update christmann/pluploadbundle
 ```
 
-Now Composer install the bundle to your project's `vendor/christmann/pluploadbundle` directory.
+Now Composer install the bundle to your project's `vendor/CIM/PluploadBundle` directory.
 
 ### Step 2: Enable the bundle
 
